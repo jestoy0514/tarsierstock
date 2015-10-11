@@ -24,6 +24,7 @@ from tkinter import ttk
 
 import sqlite3
 from datetime import date, datetime
+import os
 
 
 class ItemIn(tk.Frame):
@@ -40,6 +41,10 @@ class ItemIn(tk.Frame):
 
         # Set the geometry placement manager for the window.
         self.pack(fill='both', expand=True, padx=5, pady=5)
+
+        # Set the window icon.
+        self.iconlocation = os.getcwd() + "/tsicon.ico"
+        self.master.iconbitmap(self.iconlocation)
 
         # Initialize the database and the cursor.
         self.database = sqlite3.connect('inv_database.db')

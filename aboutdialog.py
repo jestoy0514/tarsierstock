@@ -22,6 +22,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+import os
+
 # Contant
 __appname__ = "Tarsier Stock"
 __description__ = "A simple inventory software for small business."
@@ -44,6 +46,8 @@ class AboutDialog(tk.Frame):
         self.master.resizable(0, 0)
         self.pack(fill='both', expand=True, padx=5, pady=5)
         self.master.grab_set()
+        self.iconlocation = os.getcwd() + "/tsicon.ico"
+        self.master.iconbitmap(self.iconlocation)
         # Create style.
         self.style = ttk.Style()
         self.style.configure('appname.TLabel',

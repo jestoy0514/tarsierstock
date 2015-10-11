@@ -38,6 +38,10 @@ class Reports(tk.Frame):
         self.master.protocol('WM_DELETE_WINDOW', self.appclose)
         self.pack(fill='both', expand=True)
 
+        # Set the window icon.
+        self.iconlocation = os.getcwd() + "/tsicon.ico"
+        self.master.iconbitmap(self.iconlocation)
+
         # Initialize the database.
         self.database = sqlite3.connect('inv_database.db')
         self.cur = self.database.cursor()

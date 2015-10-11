@@ -24,6 +24,7 @@ from tkinter import ttk
 from tkinter import messagebox
 
 import sqlite3
+import os
 
 
 class ItemMaster(tk.Frame):
@@ -34,6 +35,10 @@ class ItemMaster(tk.Frame):
         self.master.protocol('WM_DELETE_WINDOW', self.appclose)
         self.pack(fill='both', expand=True, padx=5, pady=5)
         self.master.grab_set()
+
+        # Set the icon of the window.
+        self.iconlocation = os.getcwd() + "/tsicon.ico"
+        self.master.iconbitmap(self.iconlocation)
 
         # Initialize the database.
         self.database = sqlite3.connect('inv_database.db')

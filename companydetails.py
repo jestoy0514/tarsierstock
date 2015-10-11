@@ -22,6 +22,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+import os
+
 import sqlite3
 
 
@@ -34,6 +36,8 @@ class CompanyDetails(tk.Frame):
         self.pack(fill='both', expand=True)
         self.master.grab_set()
         self.master.resizable(0, 0)
+        self.iconlocation = os.getcwd() + "/tsicon.ico"
+        self.master.iconbitmap(self.iconlocation)
 
         # Create a header label for the company details.
         self.company_details = ttk.Label(self, text='COMPANY DETAILS',
