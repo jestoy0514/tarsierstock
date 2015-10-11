@@ -29,7 +29,7 @@ import sqlite3
 
 class CompanyDetails(tk.Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master):
         tk.Frame.__init__(self, master)
         self.master.title('Company Details')
         self.master.protocol('WM_DELETE_WINDOW', self.appclose)
@@ -78,8 +78,9 @@ class CompanyDetails(tk.Frame):
 
 
 def main():
-    app = CompanyDetails()
-    app.mainloop()
+    root = tk.Tk()
+    CompanyDetails(root)
+    root.mainloop()
 
 if __name__ == '__main__':
     main()

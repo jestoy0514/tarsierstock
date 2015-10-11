@@ -29,7 +29,7 @@ import os
 
 class ItemOut(tk.Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master):
         tk.Frame.__init__(self, master)
         
         # Set the window title.
@@ -278,8 +278,9 @@ class ItemOut(tk.Frame):
 
 
 def main():
-    app = ItemOut()
-    app.mainloop()
+    root = tk.Tk()
+    ItemOut(root)
+    root.mainloop()
 
 if __name__ == '__main__':
     main()

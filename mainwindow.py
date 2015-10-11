@@ -35,7 +35,7 @@ __version__ = "0.1"
 
 
 class MainWindow(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master):
         """
         Initialize the graphics user interface for the main window of
         the application. It consist of menubar and 4 buttons for item
@@ -308,8 +308,9 @@ class MainWindow(tk.Frame):
 
 
 def main():
-    app = MainWindow()
-    app.mainloop()
+    root = tk.Tk()
+    MainWindow(root)
+    root.mainloop()
 
 
 if __name__ == '__main__':

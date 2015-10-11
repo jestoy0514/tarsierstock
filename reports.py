@@ -29,7 +29,7 @@ import os
 
 class Reports(tk.Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master):
         """
         Initialize the graphics user interface for stock reporting.
         """
@@ -227,8 +227,9 @@ class Reports(tk.Frame):
 
 
 def main():
-    app = Reports()
-    app.mainloop()
+    root = tk.Tk()
+    Reports(root)
+    root.mainloop()
 
 
 if __name__ == '__main__':

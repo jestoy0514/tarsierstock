@@ -29,7 +29,7 @@ import os
 
 class ItemMaster(tk.Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master):
         tk.Frame.__init__(self, master)
         self.master.title('Item Master')
         self.master.protocol('WM_DELETE_WINDOW', self.appclose)
@@ -274,8 +274,9 @@ class ItemMaster(tk.Frame):
 
 
 def main():
-    app = ItemMaster()
-    app.mainloop()
+    root = tk.Tk()
+    ItemMaster(root)
+    root.mainloop()
 
 if __name__ == '__main__':
     main()

@@ -26,7 +26,7 @@ from tkinter import ttk, scrolledtext
 
 class LicenseWindow(tk.Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master):
         tk.Frame.__init__(self, master)
         self.master.title("License")
         self.master.protocol("WM_DELETE_WINDOW", self.appclose)
@@ -59,8 +59,9 @@ class LicenseWindow(tk.Frame):
 
 
 def main():
-    app = LicenseWindow()
-    app.mainloop()
+    root = tk.Tk()
+    LicenseWindow(root)
+    root.mainloop()
 
 if __name__ == '__main__':
     main()

@@ -39,7 +39,7 @@ __copyright__ = "Copyright (c) 2015 - Jesus Vedasto Olazo"
 
 class AboutDialog(tk.Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master):
         tk.Frame.__init__(self, master)
         self.master.title('About')
         self.master.protocol('WM_DELETE_WINDOW', self.appclose)
@@ -114,8 +114,9 @@ class AboutDialog(tk.Frame):
 
 
 def main():
-    app = AboutDialog()
-    app.mainloop()
+    root = tk.Tk()
+    AboutDialog(root)
+    root.mainloop()
 
 if __name__ == '__main__':
     main()
