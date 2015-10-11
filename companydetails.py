@@ -36,7 +36,7 @@ class CompanyDetails(tk.Frame):
         self.master.resizable(0, 0)
 
         # Create a header label for the company details.
-        self.company_details = ttk.Label(self, text='Company Details',
+        self.company_details = ttk.Label(self, text='COMPANY DETAILS',
                                          foreground='orange',
                                          font=('Helvetica', 13, 'bold')
                                          )
