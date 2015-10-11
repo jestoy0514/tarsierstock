@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# mainwindow.py - Main window of the jvinventory application.
+# mainwindow.py - Main window of the tarsierstock application.
 #
 # Copyright (c) 2015 - Jesus Vedasto Olazo <jestoy.olazo@gmail.com>
 #
@@ -30,10 +30,21 @@ class CompanyDetails(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.master.title('Company Details')
-        self.master.geometry('300x200')
         self.master.protocol('WM_DELETE_WINDOW', self.appclose)
         self.pack(fill='both', expand=True)
         self.master.grab_set()
+        self.master.resizable(0, 0)
+
+        # Create a header label for the company details.
+        self.company_details = ttk.Label(self, text='Company Details',
+                                         foreground='orange',
+                                         font=('Helvetica', 13, 'bold')
+                                         )
+        self.company_details.pack()
+
+        # Create a main frame for the company details.
+        self.mainframe = tk.Frame(self, bd=1, relief='sunken')
+        self.mainframe.pack(expand=True, fill='both', padx=5, pady=5)
 
         # Initialize the database.
         self.database = sqlite3.connect('inv_database.db')
@@ -42,14 +53,14 @@ class CompanyDetails(tk.Frame):
         # Select the details.
         self.data = self.cur.execute("SELECT * FROM company").fetchall()
 
-        name = ['Name: ', 'Address: ', 'Tel: ', 'Fax: ', 'E-mail: ']
+        name = ['ORGANIZATION NAME: ', 'ADDRESS: ', 'TELEPHONE: ', 'FAX: ', 'E-MAIL: ']
         counter = 0
         for rows in self.data:
             for row in rows:
                 if row == '':
                     row = 'None'
-                self.label = ttk.Label(self, text=name[counter]+row)
-                self.label.pack(fill='both')
+                self.label = ttk.Label(self.mainframe, text=name[counter]+row)
+                self.label.pack(anchor='w', padx=5, pady=5)
                 counter += 1
 
     def appclose(self):
