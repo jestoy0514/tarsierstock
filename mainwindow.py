@@ -27,6 +27,7 @@ from companydetails import *
 from itemin import *
 from itemout import *
 from reports import *
+from licensewindow import *
 
 # Constant
 __appname__ = "Tarsier Stock"
@@ -61,6 +62,7 @@ class MainWindow(tk.Frame):
         self.menubar.add_cascade(label='Option', menu=self.optionmenu)
         self.menubar.add_cascade(label='Help', menu=self.helpmenu)
         self.filemenu.add_command(label='Quit', command=self.appclose)
+        self.helpmenu.add_command(label='License', command=self.licensewindow)
         self.helpmenu.add_command(label='Company', command=self.companydetails)
         self.helpmenu.add_command(label='About', command=self.aboutdialog)
         self.optionmenu.add_command(label='Edit Company', command=self.updatedetails)
@@ -264,6 +266,14 @@ class MainWindow(tk.Frame):
         """
         self.incoming_tp = tk.Toplevel(self.master)
         ItemIn(self.incoming_tp)
+
+    def licensewindow(self):
+        """
+        This method is for incoming transactions like deliveries or even
+        stock adjustments.
+        """
+        self.license_tp = tk.Toplevel(self.master)
+        LicenseWindow(self.license_tp)
 
     def outgoing(self):
         """
