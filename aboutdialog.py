@@ -47,7 +47,10 @@ class AboutDialog(tk.Frame):
         self.pack(fill='both', expand=True, padx=5, pady=5)
         self.master.grab_set()
         self.iconlocation = os.getcwd() + "/tsicon.ico"
-        self.master.iconbitmap(self.iconlocation)
+        try:
+            self.master.iconbitmap(self.iconlocation)
+        except:
+            pass
         # Create style.
         self.style = ttk.Style()
         self.style.configure('appname.TLabel',
