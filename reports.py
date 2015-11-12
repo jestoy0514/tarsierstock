@@ -40,7 +40,10 @@ class Reports(tk.Frame):
 
         # Set the window icon.
         self.iconlocation = os.getcwd() + "/tsicon.ico"
-        self.master.iconbitmap(self.iconlocation)
+        try:
+            self.master.iconbitmap(self.iconlocation)
+        except:
+            pass
 
         # Initialize the database.
         self.database = sqlite3.connect('inv_database.db')
