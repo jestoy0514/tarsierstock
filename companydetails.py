@@ -37,7 +37,10 @@ class CompanyDetails(tk.Frame):
         self.master.grab_set()
         self.master.resizable(0, 0)
         self.iconlocation = os.getcwd() + "/tsicon.ico"
-        self.master.iconbitmap(self.iconlocation)
+        try:
+            self.master.iconbitmap(self.iconlocation)
+        except:
+            pass
 
         # Create a header label for the company details.
         self.company_details = ttk.Label(self, text='COMPANY DETAILS',
