@@ -50,7 +50,10 @@ class MainWindow(tk.Frame):
         self.master.resizable(0, 0)
         self.pack(fill='both', expand=True, padx=5, pady=5)
         self.iconlocation = os.getcwd() + "/tsicon.ico"
-        self.master.iconbitmap(self.iconlocation)
+        try:
+            self.master.iconbitmap(self.iconlocation)
+        except:
+            pass
 
         # Create menu bar of the main window.
         self.menubar = tk.Menu(self)
