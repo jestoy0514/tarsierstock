@@ -25,7 +25,6 @@ from tkinter import ttk, scrolledtext, messagebox
 import os, csv, sqlite3
 
 from itemmaster import *
-from companydetails import *
 from itemin import *
 from itemout import *
 
@@ -40,6 +39,57 @@ __license__ = "GPLV2"
 __status__ = "Development"
 __maintainer__ = "Jesus Vedasto Olazo"
 __copyright__ = "Copyright (c) 2015 - Jesus Vedasto Olazo"
+
+
+class CompanyDetails(tk.Toplevel):
+
+    def __init__(self, master):
+        tk.Toplevel.__init__(self, master)
+        self.title('Company Details')
+        self.protocol('WM_DELETE_WINDOW', self.quitApp)
+        self.grab_set()
+        self.resizable(0, 0)
+        self.iconlocation = os.getcwd() + "/tsicon.ico"
+        try:
+            self.master.iconbitmap(self.iconlocation)
+        except:
+            pass
+
+        # Create a header label for the company details.
+        self.company_details = ttk.Label(self, text='COMPANY DETAILS',
+                                         foreground='orange',
+                                         font=('Helvetica', 13, 'bold')
+                                         )
+        self.company_details.pack()
+
+        # Create a main frame for the company details.
+        self.mainframe = tk.Frame(self, bd=1, relief='sunken')
+        self.mainframe.pack(expand=True, fill='both', padx=5, pady=5)
+
+        # Initialize the database.
+        self.database = sqlite3.connect('inv_database.db')
+        self.cur = self.database.cursor()
+
+        # Select the details.
+        self.data = self.cur.execute("SELECT * FROM company").fetchall()
+
+        name = ['ORGANIZATION NAME: ', 'ADDRESS: ', 'TELEPHONE: ', 'FAX: ', 'E-MAIL: ']
+        counter = 0
+        for rows in self.data:
+            for row in rows:
+                if row == '':
+                    row = 'None'
+                ttk.Label(self.mainframe, text=name[counter]+row).pack(anchor='w', padx=5, pady=5)
+                counter += 1
+
+    def quitApp(self):
+        # Check whether the database is open or not, if so close it.
+        if self.database:
+            self.cur.close()
+            self.database.close()
+        # Finally destroy the window on exit.
+        self.grab_release()
+        self.destroy()
 
 
 class CreateDatabase:
@@ -464,7 +514,7 @@ class MainWindow(tk.Frame):
         self.menubar.add_cascade(label='Help', menu=self.helpmenu)
         self.filemenu.add_command(label='Quit', command=self.quitApp)
         self.helpmenu.add_command(label='License', command=self.licenseWindow)
-        self.helpmenu.add_command(label='Company', command=self.companydetails)
+        self.helpmenu.add_command(label='Company', command=self.companyDetails)
         self.helpmenu.add_separator()
         self.helpmenu.add_command(label='About', command=self.aboutDialog)
         self.optionmenu.add_command(label='Edit Company', command=self.updateDetails)
@@ -682,14 +732,13 @@ class MainWindow(tk.Frame):
         self.outgoing_tp = tk.Toplevel(self.master)
         ItemOut(self.outgoing_tp)
 
-    def companydetails(self):
+    def companyDetails(self):
         """
         This is where the details for your company can be found including
         the name of the company, address, telephone and fax number, and
         e-mail provided at the start of the application.
         """
-        self.com_details_tp = tk.Toplevel(self.master)
-        CompanyDetails(self.com_details_tp)
+        CompanyDetails(self)
 
     def showReport(self):
         """
