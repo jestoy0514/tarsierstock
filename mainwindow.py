@@ -24,7 +24,6 @@ from tkinter import ttk, scrolledtext, messagebox
 
 import os, csv, sqlite3
 
-from createdatabase import *
 from itemmaster import *
 from companydetails import *
 from itemin import *
@@ -41,6 +40,79 @@ __license__ = "GPLV2"
 __status__ = "Development"
 __maintainer__ = "Jesus Vedasto Olazo"
 __copyright__ = "Copyright (c) 2015 - Jesus Vedasto Olazo"
+
+
+class CreateDatabase:
+
+    def __init__(self, com_name,
+                 com_address,
+                 com_telephone,
+                 com_fax,
+                 com_email
+                 ):
+        self.com_name = com_name
+        self.com_address = com_address
+        self.com_telephone = com_telephone
+        self.com_fax = com_fax
+        self.com_email = com_email
+        # Create the database.
+        self.database = sqlite3.connect('inv_database.db')
+        self.cur = self.database.cursor()
+
+    def create(self):
+        # Create item table.
+        self.cur.execute("""
+            CREATE TABLE item(rowid INTEGER PRIMARY KEY,
+                itemcode TEXT,
+                description TEXT,
+                unit TEXT)
+            """)
+        # Create incoming transaction table.
+        self.cur.execute("""
+            CREATE TABLE incoming(rowid INTEGER PRIMARY KEY,
+                itemcode TEXT,
+                description TEXT,
+                unit TEXT,
+                quantity REAL,
+                rate REAL,
+                date DATE,
+                remarks TEXT)
+            """)
+        # Create outgoing transaction table.
+        self.cur.execute("""
+            CREATE TABLE outgoing(rowid INTEGER PRIMARY KEY,
+                itemcode TEXT,
+                description TEXT,
+                unit TEXT,
+                quantity REAL,
+                rate REAL,
+                date DATE,
+                remarks TEXT)
+            """)
+        # Create company details.
+        self.cur.execute("""
+            CREATE TABLE company(com_name TEXT,
+                com_address TEXT,
+                com_telephone TEXT,
+                com_fax TEXT,
+                com_email TEXT)
+            """)
+        # Insert company details.
+        self.cur.execute("INSERT INTO company VALUES(?, ?, ?, ?, ?)",
+                         (self.com_name,
+                          self.com_address,
+                          self.com_telephone,
+                          self.com_fax,
+                          self.com_email))
+        # Apply the changes.
+        try:
+            self.database.commit()
+        except sqlite3.Error:
+            self.database.rollback()
+        # Close the database.
+        if self.database:
+            self.cur.close()
+            self.database.close()
 
 
 class Reports(tk.Toplevel):
@@ -415,7 +487,7 @@ class MainWindow(tk.Frame):
         # Check whether database is available
         # if not create database and tables.
         if not os.path.isfile('inv_database.db'):
-            self.setcompanydetails()
+            self.setCompanyDetails()
 
     def updateDetails(self):
         """
@@ -445,7 +517,7 @@ class MainWindow(tk.Frame):
             cur.close()
             database.close()
 
-    def setcompanydetails(self):
+    def setCompanyDetails(self):
         """
         This is a toplevel tkinter window for adding or updating
         the company details.
@@ -484,7 +556,7 @@ class MainWindow(tk.Frame):
 
         # Create save button.
         self.save_button = ttk.Button(self.setcom_frame, text='Save')
-        self.save_button.bind('<Button-1>', self.insertcomdetails)
+        self.save_button.bind('<Button-1>', self.insertComDetails)
         self.save_button.grid(row=5, column=1, sticky='e')
 
         # Set the focus to company name entry widget.
@@ -518,13 +590,12 @@ class MainWindow(tk.Frame):
             self.setcom_tp.grab_release()
             self.setcom_tp.destroy()
 
-    def insertcomdetails(self, event):
+    def insertComDetails(self, event):
         """
         This method is a bind event to a tkinter button widget so that
         if the save button has been pressed it will insert the details
         into the database and create the initial database of the program.
         """
-        print(event)
         if self.com_name_entry.get() == '':
             self.setcom_tp.grab_release()
             self.setcom_tp.destroy()
