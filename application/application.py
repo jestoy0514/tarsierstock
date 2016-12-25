@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# mainwindow.py - Main window of the tarsierstock application.
+# application.py - Module of the tarsierstock application.
 #
 # Copyright (c) 2015 - Jesus Vedasto Olazo <jessie@jestoy.frihost.net>
 #
@@ -20,10 +20,14 @@
 # MA  02110-1301, USA.
 
 import tkinter as tk
-from tkinter import ttk, scrolledtext, messagebox
-
-import os, csv, sqlite3
-from datetime import date, datetime
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter import scrolledtext
+import os
+import csv
+import sqlite3
+from datetime import date
+from datetime import date
 
 __appname__ = "Tarsier Stock"
 __description__ = "A simple inventory software for small business."
@@ -39,23 +43,23 @@ __copyright__ = "Copyright (c) 2015 - Jesus Vedasto Olazo"
 
 class ItemOut(tk.Toplevel):
 
-    def __init__(self, master):
-        tk.Toplevel.__init__(self, master)
-        
+    def __init__(self, parent):
+        tk.Toplevel.__init__(self, parent)
+        self.parent = parent
         # Set the window title.
         self.title('Outgoing')
-        
+
         # This protocol is used to call the method self.quitApp
         # for exiting the application in proper way and to make
         # sure that the database has been closed.
         self.protocol('WM_DELETE_WINDOW', self.quitApp)
 
         # Set the window icon.
-        self.iconlocation = os.getcwd() + "/tsicon.ico"
         try:
-            self.iconbitmap(self.iconlocation)
+            icon = tk.PhotoImage(file='tsicon.gif')
+            self.tk.call('wm', 'iconphoto', self._w, icon)
         except:
-            pass
+            print('Sorry an error occured setting the icon.')
 
         # Initialize the database and the cursor.
         self.database = sqlite3.connect('inv_database.db')
@@ -74,10 +78,17 @@ class ItemOut(tk.Toplevel):
         # Add a ttk treeview for the display of transaction.
         self.display_tree = ttk.Treeview(self.displayframe)
         self.display_tree.pack(side='left', expand=True, fill='both')
-        self.disyscroll = tk.Scrollbar(self.displayframe, command=self.display_tree.yview)
+        self.disyscroll = tk.Scrollbar(self.displayframe,
+                                       command=self.display_tree.yview)
         self.disyscroll.pack(side='left', fill='y')
         self.display_tree.config(yscrollcommand=self.disyscroll.set)
-        self.column = ('date', 'itemcode', 'description', 'unit', 'rate', 'quantity', 'amount', 'remarks')
+        self.column = ('date',
+                       'itemcode',
+                       'description',
+                       'unit', 'rate',
+                       'quantity',
+                       'amount',
+                       'remarks')
         self.heading = ('Date',
                         'Item Code',
                         'Description',
@@ -85,8 +96,7 @@ class ItemOut(tk.Toplevel):
                         'Rate',
                         'Quantity',
                         'Amount',
-                        'Remarks'
-                        )
+                        'Remarks')
         self.display_tree['columns'] = self.column
         for elem in self.column:
             if elem == 'date':
@@ -94,18 +104,22 @@ class ItemOut(tk.Toplevel):
             elif elem == 'itemcode':
                 col_width = 85
             elif elem == 'description':
-                col_width = 200
+                col_width = 250
             elif elem == 'unit':
                 col_width = 35
             elif elem == 'remarks':
                 col_width = 175
             else:
                 col_width = 100
-            self.display_tree.column(elem, width=col_width)
+
+            if elem == 'remarks':
+                self.display_tree.column(elem, width=col_width)
+            else:
+                self.display_tree.column(elem, width=col_width, stretch=False)
 
         counter = 0
         self.display_tree.heading('#0', text='S. No.')
-        self.display_tree.column('#0', width=35)
+        self.display_tree.column('#0', width=50, stretch=False)
         for elem in self.column:
             self.display_tree.heading(elem, text=self.heading[counter])
             counter += 1
@@ -126,7 +140,8 @@ class ItemOut(tk.Toplevel):
         self.searchitem_entry.bind('<KeyPress>', self.refreshlist)
         self.itemlistbox = tk.Listbox(self.selectframe)
         self.itemlistbox.pack(side='left', fill='both')
-        self.yscroll = tk.Scrollbar(self.selectframe, command=self.itemlistbox.yview)
+        self.yscroll = tk.Scrollbar(self.selectframe,
+                                    command=self.itemlistbox.yview)
         self.yscroll.pack(side='left', fill='y')
         self.itemlistbox.config(yscrollcommand=self.yscroll.set)
         self.itemlistbox.bind('<Double-Button-1>', self.selectitem)
@@ -257,7 +272,7 @@ class ItemOut(tk.Toplevel):
         # Initialize the database.
         data = self.cur.execute("""SELECT * FROM outgoing""")
         rows = data.fetchall()
-        
+
         # insert the report into the tree.
         counter = 1
         for row in rows:
@@ -288,7 +303,7 @@ class ItemOut(tk.Toplevel):
 
 
 class ItemIn(tk.Toplevel):
-    
+
     def __init__(self, master):
         tk.Toplevel.__init__(self, master)
 
@@ -959,7 +974,7 @@ class Reports(tk.Toplevel):
                         'Out',
                         'Balance'
                         )
-        
+
         self.column = ('itemcode',
                        'description',
                        'unit',
@@ -1069,7 +1084,7 @@ class Reports(tk.Toplevel):
                               ])
             # Start writing the details into the csv file.
             for row in item_table_fetch:
-                
+
                 # Check the itemcode if there is any in transaction.
                 # if so, sum the quantity of that transaction.
                 itotal = 0
@@ -1078,13 +1093,13 @@ class Reports(tk.Toplevel):
                         itotal += inqty[1]
 
                 ototal = 0
-                
+
                 # Check the itemcode if there is any out transaction.
                 # if so, sum the quantity of that transaction.
                 for outqty in out_table_fetch:
                     if outqty[0] == row[1]:
                         ototal += outqty[1]
-                # Start writing the details in the csv file.  
+                # Start writing the details in the csv file.
                 cwriter.writerow([row[0],
                                   row[1],
                                   row[2],
@@ -1226,7 +1241,7 @@ class AboutDialog(tk.Toplevel):
 
 
 class MainWindow(tk.Frame):
-    
+
     def __init__(self, master):
         """
         Initialize the graphics user interface for the main window of
@@ -1496,9 +1511,9 @@ class MainWindow(tk.Frame):
 
 
 def main():
-    root = tk.Tk()
-    MainWindow(root)
-    root.mainloop()
+    app = tk.Tk()
+    MainWindow(app)
+    app.mainloop()
 
 
 if __name__ == '__main__':
