@@ -2,7 +2,7 @@
 #
 # tarsierstock.py - A simple inventory software.
 #
-# Copyright (c) 2015 - Jesus Vedasto Olazo <jestoy.olazo@gmail.com>
+# Copyright (c) 2015 - Jesus Vedasto Olazo <jessie@jestoy.frihost.net>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,13 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA  02110-1301, USA.
 
-from mainwindow import *
-
-
-def main():
-    root = tk.Tk()
-    MainWindow(root)
-    root.mainloop()
+from application.application import main
 
 if __name__ == '__main__':
     main()
