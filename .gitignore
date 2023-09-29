@@ -4,5 +4,5 @@
 # Ignore virtual environment
 venv/
 # Python cache
-__pycache__
-*.pyc
+application/__pycache__
+application/__pycache__/*.pyc
