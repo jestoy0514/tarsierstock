@@ -26,19 +26,18 @@ from tkinter import scrolledtext
 import os
 import csv
 import sqlite3
-from datetime import date
-from datetime import date
+from datetime import datetime
 
 __appname__ = "Tarsier Stock"
 __description__ = "A simple inventory software for small business."
-__version__ = "0.2"
+__version__ = "1.0"
 __author__ = "Jesus Vedasto Olazo"
 __email__ = "jestoy.olazo@gmail.com"
-__web__ = "http://jestoy.frihost.net"
+__web__ = "https://jesusolazo.rf.gd"
 __license__ = "GPLV2"
 __status__ = "Development"
 __maintainer__ = "Jesus Vedasto Olazo"
-__copyright__ = "Copyright (c) 2015 - Jesus Vedasto Olazo"
+__copyright__ = "Copyright (c) 2023 - Jesus Vedasto Olazo"
 
 
 class ItemOut(tk.Toplevel):
@@ -195,7 +194,7 @@ class ItemOut(tk.Toplevel):
         self.insertdetails()
 
         # Insert today's date.
-        today = date.strftime(date.today(), '%Y-%m-%d')
+        today = datetime.strftime(datetime.today(), '%Y-%m-%d')
         self.date_entry.insert(0, today)
         self.itemcode_entry.focus_set()
 
@@ -445,7 +444,7 @@ class ItemIn(tk.Toplevel):
         self.insertdetails()
 
         # Insert today's date.
-        today = date.strftime(date.today(), '%Y-%m-%d')
+        today = datetime.strftime(datetime.today(), '%Y-%m-%d')
         self.date_entry.insert(0, today)
         self.itemcode_entry.focus_set()
 
