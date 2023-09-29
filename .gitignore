@@ -1,1 +1,6 @@
+# Binaries for programs and plugins
 *.db
+*.csv
+# Ignore virtual environment
+venv/
+
