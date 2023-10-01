@@ -47,6 +47,75 @@ if not os.path.exists(DB_NAME):
 Base.metadata.bind = ENGINE
 DBSession = sessionmaker(bind=ENGINE)
 
+
+def product_window():
+    layout = [
+        [sg.T('Product Window')],
+        [sg.B('Quit')]
+    ]
+
+    window = sg.Window('Product', layout)
+
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+    window.close()
+
+def company_window():
+    layout = [
+        [sg.T('Company Window')],
+        [sg.B('Quit')]
+    ]
+
+    window = sg.Window('Company', layout)
+
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+    window.close()
+
+def license_window():
+    layout = [
+        [sg.T('License Window')],
+        [sg.B('Quit')]
+    ]
+
+    window = sg.Window('License', layout)
+
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+    window.close()
+
+def report_window():
+    layout = [
+        [sg.T('Report Window')],
+        [sg.B('Quit')]
+    ]
+
+    window = sg.Window('Report', layout)
+
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+    window.close()
+
 def trans_window(mode):
     layout = [
         [sg.T('Transaction window')],
@@ -92,7 +161,7 @@ def main():
     sg.theme('DarkGrey3')
     # Widgets layout
     layout = [
-        [sg.Menu([['File', ['New Item', 'Incoming', 'Outgoing', '---', 'Quit']],
+        [sg.Menu([['File', ['Product', 'Incoming', 'Outgoing', '---', 'Quit']],
             ['Option', ['Themes']],
             ['Help', ['License', 'Company', '---', 'About']]])
             ],
@@ -112,6 +181,14 @@ def main():
             about_window()
         if event in ('Incoming', 'Outgoing'):
             trans_window(event)
+        if event == 'Report':
+            report_window()
+        if event == 'Company':
+            company_window()
+        if event == 'License':
+            license_window()
+        if event == 'Product':
+            product_window()
 
     window.close()
 
