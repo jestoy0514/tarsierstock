@@ -20,6 +20,12 @@
 # MA  02110-1301, USA.
 
 import PySimpleGUI as sg
+import os
+import sys
+from datetime import datetime
+from dtbase.dtbase import *
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 __appname__ = "Tarsier Stock"
 __description__ = "A simple inventory software for small business."
@@ -32,23 +38,82 @@ __status__ = "Development"
 __maintainer__ = "Jesus Vedasto Olazo"
 __copyright__ = "Copyright (c) 2023 - Jesus Vedasto Olazo"
 
-# Set theme to use
-sg.theme('BluePurple')
+DB_NAME = "tarsierstock.sqlite"
+ENGINE = create_engine(f'sqlite:///{DB_NAME}')
 
-# Widgets layout
-layout = [
-    [sg.Menu([['File', ['Quit']], ['Option'], ['Help']])],
-    [sg.B('Product'), sg.B('Incoming'), sg.B('Outgoing'),
-    sg.B('Report'), sg.B('Quit')]
+if not os.path.exists(DB_NAME):
+    Base.metadata.create_all(ENGINE)
+
+Base.metadata.bind = ENGINE
+DBSession = sessionmaker(bind=ENGINE)
+
+def trans_window(mode):
+    layout = [
+        [sg.T('Transaction window')],
+        [sg.B('Quit')]
     ]
 
-window = sg.Window(f'Tarsier Stock - {__version__}', layout)
+    window = sg.Window(f'{mode}', layout)
 
-while True:
-    # Event Loop
-    event, values = window.read()
-    print(event, values)
-    if event == sg.WIN_CLOSED or event == 'Quit':
-        break
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
 
-window.close()
+    window.close()
+
+def about_window():
+    layout = [
+        [sg.T(f'{__appname__}')],
+        [sg.T(f'version: {__version__}')],
+        [sg.T(f'{__description__}')],
+        [sg.T(f'{__author__}')],
+        [sg.T(f'{__email__}')],
+        [sg.T(f'{__web__}')],
+        [sg.T(f'{__license__}')],
+        [sg.B('Quit')]
+    ]
+
+    window = sg.Window('About', layout)
+
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+    window.close()
+
+def main():
+    # Set the theme.
+    sg.theme('DarkGrey3')
+    # Widgets layout
+    layout = [
+        [sg.Menu([['File', ['New Item', 'Incoming', 'Outgoing', '---', 'Quit']],
+            ['Option', ['Themes']],
+            ['Help', ['License', 'Company', '---', 'About']]])
+            ],
+        [sg.B('Product'), sg.B('Incoming'), sg.B('Outgoing'),
+        sg.B('Report'), sg.B('Quit')]
+    ]
+
+    window = sg.Window(f'Tarsier Stock - {__version__}', layout)
+
+    while True:
+        # Event Loop
+        event, values = window.read()
+        print(event, values)
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+        if event == 'About':
+            about_window()
+        if event in ('Incoming', 'Outgoing'):
+            trans_window(event)
+
+    window.close()
+
+if __name__ == "__main__":
+    main()
