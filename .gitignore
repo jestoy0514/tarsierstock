@@ -1,8 +1,11 @@
 # Binaries for programs and plugins
 *.db
 *.csv
+*.sqlite
 # Ignore virtual environment
 venv/
 # Python cache
 application/__pycache__
 application/__pycache__/*.pyc
+dtbase/__pycache__
+dtbase/__pycache__/*.pyc
